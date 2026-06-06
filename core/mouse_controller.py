@@ -267,6 +267,11 @@ class MouseController:
         """Update the active camera box (xmin, xmax, ymin, ymax fractions)."""
         self._boundary = boundary
 
+    def set_mirror_x(self, enabled: bool) -> None:
+        """Update horizontal mirroring of the cursor mapping (on mode switch)."""
+        self._mirror_x = enabled
+        self.reset_filter()
+
     def set_smoothing(self, smoothing: float) -> None:
         """Update the EMA factor at runtime (e.g. from a settings slider)."""
         if not 0.0 < smoothing <= 1.0:

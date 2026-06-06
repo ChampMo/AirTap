@@ -625,8 +625,15 @@ class MainWindow(QWidget):
         mirror = mode_key == "front"
         self.config.set("mirror_x", mirror)
         self.mirror_changed.emit(mirror)
+        is_topdown = mode_key == "topdown"
         # The flip controls are only relevant in Top-Down mode.
-        self.flip_controls.setVisible(mode_key == "topdown")
+        self.flip_controls.setVisible(is_topdown)
+        if not is_topdown:
+            # Entering Front-Facing: clear any flips set in Top-Down, otherwise a
+            # leftover horizontal flip stacks with mirror_x and inverts the
+            # cursor. setChecked cascades to config + the CV thread via toggled.
+            self.flip_h_button.setChecked(False)
+            self.flip_v_button.setChecked(False)
 
     def _on_flip_v_toggled(self, checked: bool) -> None:
         self.config.set("flip_vertical", bool(checked))

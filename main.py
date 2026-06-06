@@ -13,6 +13,12 @@ def main() -> int:
     app.setQuitOnLastWindowClosed(False)  # keep running if settings window closes
     config = ConfigManager()
 
+    # Flips are a Top-Down-only feature. If we launch in Front-Facing mode,
+    # clear any stale flips so they can't invert the cursor mapping.
+    if config.get("mode") != "topdown":
+        config.set("flip_horizontal", False)
+        config.set("flip_vertical", False)
+
     # Coordinator owns the MouseController (with the persisted Top-Down angle),
     # the gesture engine, and the virtual keyboard.
     controller = AppController(config)
@@ -34,8 +40,10 @@ def main() -> int:
     cv_thread.landmarks_ready.connect(controller.on_landmarks)
     cv_thread.camera_error.connect(lambda msg: print(f"[camera] {msg}"))
 
-    # Mirror the preview live when the user switches Front-Facing / Top-Down.
+    # Mirror the preview AND the cursor mapping live on mode switch, so they
+    # stay consistent without an app restart.
     window.mirror_changed.connect(cv_thread.set_mirror_enabled)
+    window.mirror_changed.connect(controller.mouse_controller.set_mirror_x)
     # Camera flips (top/bottom and left/right) toggled from the Dashboard.
     window.flip_changed.connect(cv_thread.set_flip_vertical)
     window.flip_h_changed.connect(cv_thread.set_flip_horizontal)
