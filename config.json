@@ -1,0 +1,21 @@
+{
+  "cursor_smoothing": 0.4,
+  "camera_index": 0,
+  "max_hands": 1,
+  "mirror_x": false,
+  "rotation_angle": 0.0,
+  "mode": "topdown",
+  "tap_threshold": 0.7,
+  "enable_keyboard": true,
+  "auto_hide_widget": true,
+  "widget_mode": "minimal",
+  "skeleton_opacity": 0.9,
+  "sniper_speed_reduction": 0.5,
+  "long_press_duration": 1.0,
+  "flip_vertical": true,
+  "flip_horizontal": true,
+  "boundary_xmin": 0.1,
+  "boundary_xmax": 0.9,
+  "boundary_ymin": 0.1,
+  "boundary_ymax": 0.9
+}
